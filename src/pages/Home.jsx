@@ -3,9 +3,11 @@ import { theme } from "../style/theme";
 import { useState } from "react";
 import { SearchIcon } from "../assets/SearchIcon";
 import { HomeButton } from "../components/HomeButton";
+import { useNavigate } from "react-router-dom/dist";
 
 function Home() {
   const [selectedList, setSelectedList] = useState(0);
+  const link = useNavigate();
 
   return (
     <Wrapper>
@@ -59,6 +61,9 @@ function Home() {
             <div
               style={{
                 cursor: "pointer",
+              }}
+              onClick={() => {
+                link("/search");
               }}
             >
               <SearchIcon size={20} color={theme.colors.black15} />
