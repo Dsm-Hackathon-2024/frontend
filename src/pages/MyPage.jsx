@@ -33,7 +33,7 @@ function MyPage() {
         <ListContainer>
           <div>내가 투자한 종목</div>
           <div>
-            {Array.from({ length: 10 }).map(() => {
+            {Array.from({ length: 11 }).map(() => {
               return (
                 <ListItem>
                   <div>
@@ -112,7 +112,7 @@ const ListContainer = styled.div`
     border-radius: 16px 16px 0 0;
     background-color: ${theme.colors.black50};
     height: calc(100vh - 254px);
-    padding-bottom: 30px;
+    padding-bottom: 70px;
     display: flex;
     flex-direction: column;
     gap: 16px;
