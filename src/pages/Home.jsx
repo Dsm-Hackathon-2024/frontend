@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { theme } from "../style/theme";
 import { useState } from "react";
 import { SearchIcon } from "../assets/SearchIcon";
-import { HomeButton } from "../components/HomeButton";
 import { useNavigate } from "react-router-dom/dist";
 import { UserIcon } from "../assets/UserIcon";
 
@@ -23,7 +22,7 @@ function Home() {
             </div>
             <span
               onClick={() => {
-                link("/my");
+                link("/mypage");
               }}
             >
               <UserIcon size={40} color={theme.colors.black15} />
