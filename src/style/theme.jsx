@@ -16,3 +16,5 @@ const theme = {
     black80: "#131313",
   },
 };
+
+export default theme;
