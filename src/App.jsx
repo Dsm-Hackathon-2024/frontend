@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import GlobalStyle from "./style/GlobalStyle";
 import MainRouter from "./routes/MainRouter";
+import { StyledProvider } from "./style/StyledProvider";
 
 function App() {
-  return <MainRouter />;
+  return (
+    <StyledProvider>
+      <MainRouter />
+    </StyledProvider>
+  );
 }
 
 export default App;

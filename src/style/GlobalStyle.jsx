@@ -1,7 +1,6 @@
 import { createGlobalStyle } from "styled-components";
-import theme from "./theme";
 
-const GlobalStyle = createGlobalStyle`
+export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Pretendard';
     font-weight: 900;
@@ -64,5 +63,3 @@ const GlobalStyle = createGlobalStyle`
     overflow-x: hidden;
   }
 `;
-
-export default GlobalStyle;
