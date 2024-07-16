@@ -63,7 +63,7 @@ const TopContainer = styled.div`
 const CenterContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 68px 16px 0 16px;
+  padding: 90px 16px 0 16px;
   min-width: 360px;
   max-width: 1000px;
   width: 100%;
@@ -92,7 +92,7 @@ const ListContainer = styled.div`
     padding: 16px;
     border-radius: 16px 16px 0 0;
     background-color: ${theme.colors.black50};
-    height: calc(100vh - 232px);
+    height: calc(100vh - 254px);
     padding-bottom: 30px;
     display: flex;
     flex-direction: column;
