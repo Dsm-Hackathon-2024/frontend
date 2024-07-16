@@ -12,12 +12,14 @@ export const HomeButton = () => {
 
   return (
     <Wrapper>
-      <Container
-        onClick={() => {
-          link("/home");
-        }}
-      >
-        <HomeIcon size={24} color={theme.colors.black15} />
+      <Container>
+        <span
+          onClick={() => {
+            link("/home");
+          }}
+        >
+          <HomeIcon size={24} color={theme.colors.black15} />
+        </span>
       </Container>
     </Wrapper>
   );
@@ -27,11 +29,14 @@ const Wrapper = styled.div`
   position: fixed;
   width: 100%;
   height: 50px;
-  max-width: 1000px;
   padding: 16px;
   top: 0;
+  display: flex;
+  justify-content: center;
 `;
 
-const Container = styled.span`
+const Container = styled.div`
   cursor: pointer;
+  max-width: 968px;
+  width: 100%;
 `;
