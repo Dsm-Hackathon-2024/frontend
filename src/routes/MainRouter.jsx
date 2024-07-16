@@ -6,18 +6,22 @@ import Search from "../pages/Search";
 import Layout from "./Layout";
 import MyPage from "../pages/MyPage";
 import News from "../pages/News";
+import NewsDetail from "../pages/NewsDetail";
 
 function MainRouter() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route path="/" element={<Login />} />
+          <Route index element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/home" element={<Home />} />
           <Route path="/search" element={<Search />} />
           <Route path="/mypage" element={<MyPage />} />
-          <Route path="/news" element={<News />} />
+          <Route path="news">
+            <Route index element={<News />} />
+            <Route path=":id" element={<NewsDetail />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
