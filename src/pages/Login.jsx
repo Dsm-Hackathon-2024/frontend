@@ -118,7 +118,6 @@ const IdContainer = styled.div`
   flex-direction: column;
 `;
 const PsContainer = styled(IdContainer)``;
-
 const Input = styled.input`
   padding: 20px;
   display: flex;

@@ -1,16 +1,20 @@
 import styled from "styled-components";
 import { HomeIcon } from "../assets/HomeIcon";
 import { theme } from "../style/theme";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom/dist";
 
 export const HomeButton = () => {
-  // const link = useNavigate();
+  const link = useNavigate();
+  const { pathname: path } = useLocation();
+
+  if (path === "/home" || path === "/" || path === "/signup") return null;
 
   return (
     <Wrapper>
       <Container
         onClick={() => {
-          // link("/");
+          link("/home");
         }}
       >
         <HomeIcon size={24} color={theme.colors.black15} />
@@ -28,6 +32,6 @@ const Wrapper = styled.div`
   top: 0;
 `;
 
-const Container = styled.div`
+const Container = styled.span`
   cursor: pointer;
 `;
