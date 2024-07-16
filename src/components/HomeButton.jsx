@@ -33,10 +33,17 @@ const Wrapper = styled.div`
   top: 0;
   display: flex;
   justify-content: center;
+  z-index: 10;
+  background-color: ${theme.colors.black80};
 `;
 
 const Container = styled.div`
-  cursor: pointer;
   max-width: 968px;
   width: 100%;
+  > span {
+    cursor: pointer;
+    display: block;
+    width: 28px;
+    height: 28px;
+  }
 `;
