@@ -1,15 +1,27 @@
 import styled from "styled-components";
 import { theme } from "../style/theme";
-import { SearchIcon } from "../assets/SearchIcon";
+import CoinIcon from "../assets/CoinIcon";
+import { useNavigate } from "react-router-dom/dist";
 
 function MyPage() {
+  const link = useNavigate();
+
   return (
     <Wrapper>
       <CenterContainer>
         <TextContainer>
-          jyk1029님!
-          <br />
-          반가워요 😃
+          <div>
+            jyk1029님!
+            <br />
+            반가워요 😃
+          </div>
+          <span
+            onClick={() => {
+              link("/news");
+            }}
+          >
+            <CoinIcon size={40} color={theme.colors.black15} />
+          </span>
         </TextContainer>
         <PossessionContainer>
           <div>현재 소유 잔액</div>
@@ -67,9 +79,21 @@ const CenterContainer = styled.div`
 `;
 
 const TextContainer = styled.div`
-  font-size: 24px;
-  font-weight: 600;
-  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  > div {
+    font-size: 24px;
+    font-weight: 600;
+    color: white;
+  }
+  > span {
+    cursor: pointer;
+    margin-right: 10px;
+    @media screen and (min-width: 600px) {
+      margin-right: 0px;
+    }
+  }
 `;
 
 const ListContainer = styled.div`
