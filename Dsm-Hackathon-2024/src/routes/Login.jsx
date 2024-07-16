@@ -1,12 +1,25 @@
 import styled from "styled-components";
 
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+const IdContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+const PsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const InputId = styled.input`
   /* input */
 
   /* Auto layout */
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+
   padding: 0px;
   gap: 8px;
 
@@ -14,16 +27,6 @@ const InputId = styled.input`
   height: 72px;
 
   /* Frame 86 */
-
-  /* Auto layout */
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0px;
-  gap: 4px;
-
-  width: 328px;
-  height: 72px;
 
   /* Inside auto layout */
   flex: none;
@@ -53,9 +56,7 @@ const InputId = styled.input`
   /* Frame 85 */
 
   /* Auto layout */
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+
   padding: 12px;
 
   width: 328px;
@@ -92,13 +93,10 @@ const Password = styled.input`
   /* input_icon */
 
   /* Auto layout */
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+
   padding: 0px;
   gap: 8px;
 
-  position: absolute;
   width: 328px;
   height: 72px;
 
@@ -112,9 +110,7 @@ const Password = styled.input`
   /* Frame 85 */
 
   /* Auto layout */
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+
   padding: 12px;
   isolation: isolate;
 
@@ -153,10 +149,20 @@ const Password = styled.input`
 
 function Login() {
   return (
-    <>
-      <InputId type="text" placeholder="아이디를 입력하세요" />
-      <Password type="password" placeholder="비밀번호를 입력하세요" />
-    </>
+    <Container>
+      <IdContainer>
+        <label for="Id">아이디</label>
+        <InputId type="text" placeholder="아이디를 입력하세요" name="Id" />
+      </IdContainer>
+      <PsContainer>
+        <label for="Ps">비밀번호</label>
+        <Password
+          type="password"
+          placeholder="비밀번호를 입력하세요"
+          name="Ps"
+        />
+      </PsContainer>
+    </Container>
   );
 }
 
