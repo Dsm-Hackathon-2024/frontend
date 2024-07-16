@@ -6,7 +6,6 @@ import { SearchIcon } from "../assets/SearchIcon";
 function Search() {
   return (
     <Wrapper>
-      <HomeButton />
       <CenterContainer>
         <TopContainer>
           <TextContainer>검색 🔎</TextContainer>
