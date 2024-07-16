@@ -4,6 +4,7 @@ import { useState } from "react";
 import { SearchIcon } from "../assets/SearchIcon";
 import { HomeButton } from "../components/HomeButton";
 import { useNavigate } from "react-router-dom/dist";
+import { UserIcon } from "../assets/UserIcon";
 
 function Home() {
   const [selectedList, setSelectedList] = useState(0);
@@ -11,14 +12,22 @@ function Home() {
 
   return (
     <Wrapper>
-      <HomeButton />
       <CenterContainer>
         <TextContainer>
           <div>jyk1029님 환영합니다!</div>
           <div>
-            MOTOO 에서
-            <br />
-            투자를 경험해보세요🔥
+            <div>
+              MOTOO 에서
+              <br />
+              투자를 경험해보세요🔥
+            </div>
+            <span
+              onClick={() => {
+                link("/my");
+              }}
+            >
+              <UserIcon size={40} color={theme.colors.black15} />
+            </span>
           </div>
         </TextContainer>
         <RecommendContainer>
@@ -124,8 +133,16 @@ const TextContainer = styled.div`
     font-size: 12px;
   }
   > div:nth-child(2) {
-    font-size: 24px;
-    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    > div {
+      font-size: 24px;
+      font-weight: 600;
+    }
+    > span {
+      cursor: pointer;
+    }
   }
 `;
 
