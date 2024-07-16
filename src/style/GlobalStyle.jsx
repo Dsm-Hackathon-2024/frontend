@@ -57,6 +57,7 @@ export const GlobalStyle = createGlobalStyle`
     font-style: normal;
     font-family: 'Pretendard', sans-serif;
     text-decoration-line: none;
+    box-sizing:border-box;
   }
 
   body {
