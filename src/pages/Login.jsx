@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import theme from "../style/theme";
+import { Link } from "react-router-dom";
 
 function Login() {
   return (
@@ -22,6 +23,10 @@ function Login() {
         </LoginField>
         <Footer>
           <LoginBtn>로그인</LoginBtn>
+          <FooterMsg>
+            아직 계정이 없으신가요?
+            <Link to={"/signup"}>회원가입</Link>
+          </FooterMsg>
         </Footer>
       </Container>
     </>
@@ -30,13 +35,30 @@ function Login() {
 
 export default Login;
 
+const FooterMsg = styled.p`
+  color: ${theme.colors.black0};
+  font-family: "Light";
+  font-size: 12px;
+  text-align: center;
+  box-sizing: border-box;
+  margin-bottom: 50px;
+  margin-top: 10px;
+  & > a {
+    color: ${theme.colors.blue50};
+    margin: 10px;
+    &:visited {
+      color: ${theme.colors.blue50};
+    }
+  }
+`;
+
 const LoginField = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
 `;
 const Container = styled.div`
-  background-color: ${({ theme }) => theme.colors.black80};
+  background-color: ${theme.colors.black80};
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -66,7 +88,7 @@ const LoginBtn = styled.button`
   cursor: pointer;
 
   /* Blue/500(main) */
-  background: ${({ theme }) => theme.colors.blue50};
+  background: ${theme.colors.blue50};
   border-radius: 8px;
 
   /* 로그인 */
@@ -80,12 +102,12 @@ const LoginBtn = styled.button`
   text-align: center;
 
   /* Black/0 */
-  color: ${({ theme }) => theme.colors.black0};
+  color: ${theme.colors.black0};
 `;
 
 const Title = styled.h1`
   font-family: "Semi Bold";
-  color: ${({ theme }) => theme.colors.black0};
+  color: ${theme.colors.black0};
   font-size: 32px;
   box-sizing: border-box;
   margin-top: 60px;
@@ -104,14 +126,14 @@ const Input = styled.input`
   width: 308px;
   height: 72px;
   border-radius: 8px;
-  background: ${({ theme }) => theme.colors.black50};
+  background: ${theme.colors.black50};
 
   height: 24px;
 
-  color: ${({ theme }) => theme.colors.black0};
+  color: ${theme.colors.black0};
 
   &::placeholder {
-    color: ${({ theme }) => theme.colors.black0};
+    color: ${theme.colors.black0};
   }
 `;
 
@@ -121,7 +143,7 @@ const Label = styled.label`
   font-weight: 400;
   font-size: 14px;
   line-height: 24px;
-  color: ${({ theme }) => theme.colors.black0};
+  color: ${theme.colors.black0};
 `;
 
 const Password = styled(Input)``;
