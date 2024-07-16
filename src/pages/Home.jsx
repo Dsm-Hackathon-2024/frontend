@@ -141,6 +141,10 @@ const TextContainer = styled.div`
     }
     > span {
       cursor: pointer;
+      margin-right: 10px;
+      @media screen and (min-width: 600px) {
+        margin-right: 0px;
+      }
     }
   }
 `;
