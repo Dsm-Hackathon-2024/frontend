@@ -3,22 +3,38 @@ import { theme } from "../style/theme";
 import CoinIcon from "../assets/CoinIcon";
 import { useNavigate } from "react-router-dom/dist";
 import { ListItem } from "../components/ListItem";
+import { useEffect, useState } from "react";
+import { myInfo } from "../utils/apis/user";
 
 function MyPage() {
   const link = useNavigate();
+  const [data, setData] = useState({
+    name: "",
+    points: 0,
+  });
+
+  useEffect(() => {
+    myInfo()
+      .then(res => {
+        setData(res.data);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }, []);
 
   return (
     <Wrapper>
       <CenterContainer>
         <TextContainer>
-          jyk1029님!
+          {data.name}님!
           <br />
           반가워요 😃
         </TextContainer>
         <PossessionContainer>
           <div>현재 소유 잔액</div>
           <div>
-            <span>10,000,000</span>
+            <span>{data.points}</span>
             <span>원</span>
           </div>
           <div
