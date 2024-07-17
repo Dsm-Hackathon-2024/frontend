@@ -6,13 +6,16 @@ import { useSearchParams } from "react-router-dom/dist";
 import { postStockBuy, postStockSell } from "../utils/apis/invest";
 import { getUserInfo, getUserInvest } from "../utils/apis/user";
 import LoadingBox from "../components/LoadingBox";
+import { myInvest as _myInvest } from "../utils/apis/user";
+import { getObjectByName } from "../function/getObjectByName";
 
 const Details = () => {
   const [invest, setInvest] = useState("Buy");
   const [stockTrace, setStockTrace] = useState();
   const [stockInfo, setStockInfo] = useState();
+  const [myStock, setMyStock] = useState();
   const [layout, setLayout] = useState();
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState("0주");
   const [userInfo, setUserInfo] = useState();
   const [myInvest, setmyInvest] = useState();
 
@@ -21,21 +24,21 @@ const Details = () => {
   const queryPrice = searchParams.get("price");
   const queryRoc = searchParams.get("roc");
 
-  useEffect(() => {
-    const getStockData = async () => {
-      const data = await getStockPrice(queryName);
-      setStockTrace(data.trace);
-      setStockInfo(data.info);
-    };
-    const getMyPoint = async () => {
-      const { data } = await getUserInfo();
-      setUserInfo(data);
-    };
-    const getMyInvest = async () => {
-      const { data } = await getUserInvest();
-      setmyInvest(data.filter(iv => iv.name === queryName));
-    };
+  const getStockData = async () => {
+    const data = await getStockPrice(queryName);
+    setStockTrace(data.trace);
+    setStockInfo(data.info);
+  };
+  const getMyPoint = async () => {
+    const { data } = await getUserInfo();
+    setUserInfo(data);
+  };
+  const getMyInvest = async () => {
+    const { data } = await getUserInvest();
+    setmyInvest(data.filter(iv => iv.name === queryName));
+  };
 
+  useEffect(() => {
     getMyInvest();
     getMyPoint();
     getStockData();
@@ -78,6 +81,12 @@ const Details = () => {
     console.log(stockInfo);
   }, [stockInfo, stockTrace]);
 
+  useEffect(() => {
+    _myInvest().then(res => {
+      setMyStock(res.data);
+    });
+  });
+
   const handleBuyClick = () => {
     setInvest("Buy");
   };
@@ -97,6 +106,7 @@ const Details = () => {
     const prev = inputValue;
     const rawValue = Number(prev.replace(/\s?주$/, "").replace(/,/g, ""));
     const formattedValue = formatNumber(`${rawValue - 1}`);
+    if (formattedValue <= -1) return;
     setInputValue(`${formattedValue} 주`);
   };
 
@@ -140,14 +150,22 @@ const Details = () => {
         Number(quantity),
         Number(queryPrice),
         Number(queryRoc)
-      );
+      )
+        .then(() => {
+          setInputValue("0 주");
+          getMyPoint();
+        })
+        .catch(err => console.log(err));
     } else if (invest === "Sell") {
       await postStockSell(
         queryName,
         Number(quantity),
         Number(queryPrice),
         Number(queryRoc)
-      );
+      ).then(() => {
+        setInputValue("0 주");
+        getMyPoint();
+      });
     }
   };
 
@@ -192,6 +210,7 @@ const Details = () => {
         <QuantityBox>
           <p>
             {invest === "Buy" ? "매수" : "매도"} 희망수량 (현재 보유 수량 :{" "}
+            {Object(getObjectByName(myStock, queryName)).quantity || 0}
             {myInvest?.quantity}주)
           </p>
           <InputContainer>
