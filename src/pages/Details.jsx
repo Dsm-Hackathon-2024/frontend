@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 import getStockPrice from "../utils/function/getStockPrice";
@@ -66,15 +66,17 @@ const Details = () => {
   };
 
   const handlePlusClick = () => {
-    console.log(inputValue);
     const prev = inputValue;
-    rawValue = prev.replace(/\s?주$/, "");
-    console.log(rawValue);
-    setInputValue(prev => (prev += 1));
+    const rawValue = Number(prev.replace(/\s?주$/, "").replace(/,/g, ""));
+    const formattedValue = formatNumber(`${rawValue + 1}`);
+    setInputValue(`${formattedValue} 주`);
   };
 
   const handleMinusClick = () => {
-    setInputValue(prev => (prev -= 1));
+    const prev = inputValue;
+    const rawValue = Number(prev.replace(/\s?주$/, "").replace(/,/g, ""));
+    const formattedValue = formatNumber(`${rawValue - 1}`);
+    setInputValue(`${formattedValue} 주`);
   };
 
   const formatNumber = num => {
@@ -89,7 +91,7 @@ const Details = () => {
       setInputValue(""); // 입력값이 없으면 빈 문자열로 설정
     } else {
       const formattedValue = formatNumber(inputValue);
-      setInputValue(`${formattedValue} 주`);
+      setInputValue(`${formattedValue}`);
     }
   };
 
@@ -104,7 +106,7 @@ const Details = () => {
     const currentValue = e.target.value;
     // 포맷팅된 값을 다시 설정
     const formattedValue = formatNumber(currentValue);
-    setInputValue(formattedValue ? `${formattedValue}` : "");
+    setInputValue(formattedValue ? `${formattedValue} 주` : "");
   };
   return (
     <View>
@@ -122,6 +124,11 @@ const Details = () => {
               style={{ width: "100%", height: "100%" }}
               config={{ displayModeBar: false }}
             />
+          )}
+          {(!stockInfo || !stockTrace) && (
+            <LoadingBox>
+              <Spinner></Spinner>
+            </LoadingBox>
           )}
         </GraphBox>
       </GraphSection>
@@ -144,7 +151,7 @@ const Details = () => {
           <PointChargeButton>포인트 충전하러 가기</PointChargeButton>
         </PointBox>
         <QuantityBox>
-          <p>매수 희망수량</p>
+          <p>{invest === "Buy" ? "매수" : "매도"} 희망수량</p>
           <InputContainer>
             <PlusButton onClick={handlePlusClick}>+</PlusButton>
             <StocksInput
@@ -158,7 +165,9 @@ const Details = () => {
             <MinusButton onClick={handleMinusClick}>-</MinusButton>
           </InputContainer>
         </QuantityBox>
-        <TradingButton invest={invest}>매수</TradingButton>
+        <TradingButton invest={invest}>
+          {invest === "Buy" ? "매수" : "매도"}
+        </TradingButton>
       </InvestSection>
     </View>
   );
@@ -204,6 +213,35 @@ const GraphBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const LoadingBox = styled.div`
+  position: absolute;
+  margin: auto;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Spin = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+`;
+
+const Spinner = styled.div`
+  width: 30px;
+  height: 30px;
+  border: 2px solid gray;
+  border-top: 2px solid black;
+  border-radius: 50%;
+
+  animation: ${Spin} 1s linear infinite;
 `;
 
 const InvestSection = styled.section`
