@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { theme } from "../style/theme";
 import CoinIcon from "../assets/CoinIcon";
 import { useNavigate } from "react-router-dom/dist";
+import { ListItem } from "../components/ListItem";
 
 function MyPage() {
   const link = useNavigate();
@@ -33,7 +34,7 @@ function MyPage() {
         <ListContainer>
           <div>내가 투자한 종목</div>
           <div>
-            {Array.from({ length: 11 }).map(() => {
+            {Array.from({ length: 15 }).map(() => {
               return (
                 <ListItem>
                   <div>
@@ -121,42 +122,6 @@ const ListContainer = styled.div`
     }
     > div:first-child {
       background-color: ${theme.colors.black40};
-    }
-  }
-`;
-
-const ListItem = styled.div`
-  width: 100%;
-  height: 46px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  > div:nth-child(1) {
-    color: white;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    > div:nth-child(1) {
-      font-size: 14px;
-      font-weight: 600;
-    }
-    > div:nth-child(2) {
-      font-size: 12px;
-      font-weight: 500;
-    }
-  }
-  > div:nth-child(2) {
-    display: flex;
-    gap: 6px;
-    font-size: 12px;
-    font-weight: 500;
-    > div:nth-child(1) {
-      color: white;
-    }
-    > div:nth-child(2) {
-      color: ${theme.colors.red50};
     }
   }
 `;
