@@ -67,9 +67,6 @@ function News() {
                   link(`/news/${news.id}`);
                 }}
               >
-                <ImageContainer>
-                  <StyledImage src={news.imgUrl} alt={news.title} />
-                </ImageContainer>
                 <NewsTitle>{news.title}</NewsTitle>
                 <NewsContent>{news.content}</NewsContent>
               </NewsBox>
@@ -130,34 +127,15 @@ const NewsBox = styled.div`
   padding: 16px;
   color: white;
   width: 100%;
-  height: 320px;
+  height: 150px;
   display: flex;
   flex-direction: column;
   cursor: pointer;
 `;
 
-const StyledImage = styled.img`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`;
-
-const ImageContainer = styled.div`
-  width: 100%;
-  height: 156px;
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  flex-shrink: 0;
-`;
-
 const NewsTitle = styled.div`
   font-size: 18px;
   font-weight: 600;
-  margin-top: 12px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
