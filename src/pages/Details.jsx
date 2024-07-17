@@ -2,12 +2,13 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 import getStockPrice from "../utils/function/getStockPrice";
-import { useSearchParams } from "react-router-dom/dist";
+import { useSearchParams, Link } from "react-router-dom/dist";
 import { postStockBuy, postStockSell } from "../utils/apis/invest";
 import { getUserInfo, getUserInvest } from "../utils/apis/user";
 import LoadingBox from "../components/LoadingBox";
 import { myInvest as _myInvest } from "../utils/apis/user";
 import { getObjectByName } from "../function/getObjectByName";
+import theme from "../style/theme";
 
 const Details = () => {
   const [invest, setInvest] = useState("Buy");
@@ -48,8 +49,8 @@ const Details = () => {
     stockInfo &&
       stockTrace &&
       setLayout({
-        paper_bgcolor: "black",
-        plot_bgcolor: "black",
+        paper_bgcolor: theme.colors.black80,
+        plot_bgcolor: theme.colors.black80,
         dragmode: "zoom",
         showlegend: false,
         xaxis: {
@@ -170,81 +171,104 @@ const Details = () => {
   };
 
   return (
-    <View>
-      <GraphSection>
-        <Title invest={invest}>
-          <span>{queryName}</span> 종목으로
-          <br /> 모의 투자를 시작해보세요🎉
-        </Title>
-        <GraphBox>
-          {stockInfo && stockTrace && (
-            <Plot
-              data={[stockTrace]}
-              layout={layout}
-              useResizeHandler={true}
-              style={{ width: "100%", height: "100%" }}
-              config={{ displayModeBar: false }}
-            />
-          )}
-          {(!stockInfo || !stockTrace) && <LoadingBox />}
-        </GraphBox>
-      </GraphSection>
-      <InvestSection>
-        <ButtonGroup>
-          <BuyButton invest={invest} onClick={handleBuyClick}>
-            매수하기
-          </BuyButton>
-          <SellButton invest={invest} onClick={handleSellClick}>
-            매도하기
-          </SellButton>
-        </ButtonGroup>
-        <PointBox>
-          <p>현재 {userInfo?.name}님은</p>
-          <Point invest={invest}>
-            <span>{userInfo?.points}</span>
-            <span>원</span>
-          </Point>
-          <p>소유하고 있습니다.</p>
-          <PointChargeButton>포인트 충전하러 가기</PointChargeButton>
-        </PointBox>
-        <QuantityBox>
-          <p>
-            {invest === "Buy" ? "매수" : "매도"} 희망수량 (현재 보유 수량 :{" "}
-            {Object(getObjectByName(myStock, queryName)).quantity || 0}
-            {myInvest?.quantity}주)
-          </p>
-          <InputContainer>
-            <PlusButton onClick={handlePlusClick}>+</PlusButton>
-            <StocksInput
-              type="text"
-              invest={invest}
-              value={inputValue}
-              onChange={handleInputChange}
-              onFocus={handleInputFocus}
-              onBlur={handleInputBlur}
-            />
-            <MinusButton onClick={handleMinusClick}>-</MinusButton>
-          </InputContainer>
-        </QuantityBox>
-        <TradingButton invest={invest} onClick={handleTradingClick}>
-          {invest === "Buy" ? "매수" : "매도"}
-        </TradingButton>
-      </InvestSection>
-    </View>
+    <_Wrapper>
+      <View>
+        <GraphSection>
+          <Title invest={invest}>
+            <span>{queryName}</span> 종목으로
+            <br /> 모의 투자를 시작해보세요🎉
+          </Title>
+          <GraphBox>
+            {stockInfo && stockTrace && (
+              <Plot
+                data={[stockTrace]}
+                layout={layout}
+                useResizeHandler={true}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: theme.colors.black80,
+                }}
+                config={{ displayModeBar: false }}
+              />
+            )}
+            {(!stockInfo || !stockTrace) && <LoadingBox />}
+          </GraphBox>
+        </GraphSection>
+        <InvestSection>
+          <ButtonGroup>
+            <BuyButton invest={invest} onClick={handleBuyClick}>
+              매수하기
+            </BuyButton>
+            <SellButton invest={invest} onClick={handleSellClick}>
+              매도하기
+            </SellButton>
+          </ButtonGroup>
+          <PointBox>
+            <p>현재 {userInfo?.name}님은</p>
+            <Point invest={invest}>
+              <span>{userInfo?.points}</span>
+              <span>원</span>
+            </Point>
+            <p>소유하고 있습니다.</p>
+            <Link to="/news">
+              <PointChargeButton>포인트 충전하러 가기</PointChargeButton>
+            </Link>
+          </PointBox>
+          <QuantityBox>
+            <p>
+              {invest === "Buy" ? "매수" : "매도"} 희망수량 (현재 보유 수량 :{" "}
+              {Object(getObjectByName(myStock, queryName)).quantity || 0}
+              {myInvest?.quantity}주)
+            </p>
+            <InputContainer>
+              <PlusButton onClick={handlePlusClick}>+</PlusButton>
+              <StocksInput
+                type="text"
+                invest={invest}
+                value={inputValue}
+                onChange={handleInputChange}
+                onFocus={handleInputFocus}
+                onBlur={handleInputBlur}
+              />
+              <MinusButton onClick={handleMinusClick}>-</MinusButton>
+            </InputContainer>
+          </QuantityBox>
+          <TradingButton invest={invest} onClick={handleTradingClick}>
+            {invest === "Buy" ? "매수" : "매도"}
+          </TradingButton>
+        </InvestSection>
+      </View>
+    </_Wrapper>
   );
 };
+
+const _Wrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background-color: ${theme.colors.black80};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+`;
 
 const View = styled.main`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  width: 100vw;
-  height: 100vh;
+  padding: 0 16px 0 16px;
+  min-width: 360px;
+  max-width: 1000px;
+  width: 100%;
+  height: 100%;
   overflow-x: hidden;
   background-color: ${props => props.theme.colors.black80};
   font-size: 12px;
   color: ${props => props.theme.colors.black0};
 `;
+
+const Wrapper = styled.div``;
 
 const Title = styled.span`
   color: ${({ theme }) => theme.colors.black0};
