@@ -53,6 +53,7 @@ const PasswordIcon = styled.div`
   top: 0;
   right: 0;
   margin: 8px;
+  cursor: pointer;
 `;
 
 const FooterMsg = styled.p`
