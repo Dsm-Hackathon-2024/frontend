@@ -53,7 +53,7 @@ function Home() {
           </div>
         </TextContainer>
         <RecommendContainer>
-          <div>AI가 추천한 jyk1029님의 종목은</div>
+          <div>AI가 추천한 {_myInfo.name}님의 종목은</div>
           <div>
             <div>기아</div>
             <div>유한양행우</div>
