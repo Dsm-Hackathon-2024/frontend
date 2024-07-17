@@ -3,12 +3,13 @@ import { theme } from "../style/theme";
 import { useNavigate } from "react-router-dom/dist";
 import { ListItem } from "../components/ListItem";
 import { useEffect, useState } from "react";
-import { myInfo } from "../utils/apis/user";
+import { myInfo, myInvest } from "../utils/apis/user";
 
 function MyPage() {
   const link = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState();
+  const [stocksList, setStocksList] = useState();
 
   useEffect(() => {
     myInfo()
@@ -18,6 +19,16 @@ function MyPage() {
       })
       .catch(err => {
         console.error(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    myInvest()
+      .then(res => {
+        setStocksList(res.data);
+      })
+      .catch(err => {
+        console.log(err);
       });
   }, []);
 
@@ -97,20 +108,34 @@ function MyPage() {
         <ListContainer>
           <div>내가 투자한 종목</div>
           <div>
-            {Array.from({ length: 15 }).map(() => {
-              return (
-                <ListItem>
-                  <div>
-                    <div>1</div>
-                    <div>삼성전자</div>
-                  </div>
-                  <div>
-                    <div>87,600원</div>
-                    <div>+0.92%</div>
-                  </div>
-                </ListItem>
-              );
-            })}
+            {stocksList &&
+              stocksList.length > 0 &&
+              stocksList
+                .sort((a, b) => Number(a.clpr) - Number(b.clpr))
+                .map((stock, idx) => {
+                  return (
+                    <a
+                      href={`/invest?name=${stock.itmsNm}`}
+                      onClick={() =>
+                        setDetailInfo({
+                          price: stock.clpr,
+                          roc: stock.fltRt,
+                        })
+                      }
+                    >
+                      <ListItem key={idx} isMinus={stock.roc < 0}>
+                        <div>
+                          <div>{idx + 1}</div>
+                          <div>{stock.name}</div>
+                        </div>
+                        <div>
+                          <div>{stock.price}원</div>
+                          <div>{stock.roc}</div>
+                        </div>
+                      </ListItem>
+                    </a>
+                  );
+                })}
           </div>
         </ListContainer>
       </CenterContainer>
