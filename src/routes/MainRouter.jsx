@@ -9,8 +9,10 @@ import NewsDetail from "../pages/NewsDetail";
 import Details from "../pages/Details";
 import { ThemeProvider } from "styled-components";
 import theme from "../style/theme";
+import { useState } from "react";
 
 function MainRouter() {
+  const [detailInfo, setDetailInfo] = useState({});
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
@@ -38,12 +40,16 @@ function MainRouter() {
                 />
               }
             />
-            <Route path="/home" element={<Home />} />
+            <Route
+              path="/home"
+              element={<Home setDetailInfo={setDetailInfo} />}
+            />
             <Route path="/search" element={<Search />} />
             <Route path="/mypage" element={<MyPage />} />
-            <Route path="/invest">
-              <Route path=":id" element={<Details />} />
-            </Route>
+            <Route
+              path="/invest"
+              element={<Details detailInfo={detailInfo} />}
+            />
             <Route path="news">
               <Route index element={<News />} />
               <Route path=":id" element={<NewsDetail />} />

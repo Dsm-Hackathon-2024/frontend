@@ -2,17 +2,22 @@ import styled, { keyframes } from "styled-components";
 import { useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 import getStockPrice from "../utils/function/getStockPrice";
+import { useSearchParams } from "react-router-dom/dist";
+import { postStockBuy, postStockSell } from "../utils/apis/invest";
 
-const Details = () => {
+const Details = ({ detailInfo }) => {
   const [invest, setInvest] = useState("Buy");
   const [stockTrace, setStockTrace] = useState();
   const [stockInfo, setStockInfo] = useState();
   const [layout, setLayout] = useState();
   const [inputValue, setInputValue] = useState("");
 
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get("name");
+
   useEffect(() => {
     const getStockData = async () => {
-      const data = await getStockPrice("KOSPI", "삼성전자");
+      const data = await getStockPrice(query);
       setStockTrace(data.trace);
       setStockInfo(data.info);
     };
@@ -108,11 +113,33 @@ const Details = () => {
     const formattedValue = formatNumber(currentValue);
     setInputValue(formattedValue ? `${formattedValue} 주` : "");
   };
+
+  const handleTradingClick = async e => {
+    const invest = e.target.getAttribute("invest");
+    const quantity = inputValue.replace(/\s?주$/, "").replace(/,/g, "");
+
+    if (invest === "Buy") {
+      await postStockBuy(
+        query,
+        Number(quantity),
+        Number(detailInfo.price),
+        Number(detailInfo.roc)
+      ).catch(err => console.log(err));
+    } else if (invest === "Sell") {
+      await postStockSell(
+        query,
+        Number(quantity),
+        Number(detailInfo.price),
+        Number(detailInfo.roc)
+      ).catch(err => console.log(err));
+    }
+  };
+
   return (
     <View>
       <GraphSection>
         <Title invest={invest}>
-          <span>삼성전자</span> 종목으로
+          <span>{query}</span> 종목으로
           <br /> 모의 투자를 시작해보세요🎉
         </Title>
         <GraphBox>
@@ -151,7 +178,9 @@ const Details = () => {
           <PointChargeButton>포인트 충전하러 가기</PointChargeButton>
         </PointBox>
         <QuantityBox>
-          <p>{invest === "Buy" ? "매수" : "매도"} 희망수량</p>
+          <p>
+            {invest === "Buy" ? "매수" : "매도"} 희망수량 (현재 보유 수량 : 0주)
+          </p>
           <InputContainer>
             <PlusButton onClick={handlePlusClick}>+</PlusButton>
             <StocksInput
@@ -165,7 +194,7 @@ const Details = () => {
             <MinusButton onClick={handleMinusClick}>-</MinusButton>
           </InputContainer>
         </QuantityBox>
-        <TradingButton invest={invest}>
+        <TradingButton invest={invest} onClick={handleTradingClick}>
           {invest === "Buy" ? "매수" : "매도"}
         </TradingButton>
       </InvestSection>

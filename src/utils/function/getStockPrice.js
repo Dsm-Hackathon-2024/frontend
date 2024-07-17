@@ -1,12 +1,10 @@
-import axios from "axios";
+import { getStockDetails } from "../apis/invest";
 
-const getStockPrice = async () => {
-  const response = await axios.get(
-    "https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=o1HD8Bw2KAgLa2OhNix6eKL2Unl3JCd9AV2PQ%2FkvzWfL0nZ9y9NccXNkjAmiP9iQaLiDJHRKUWv6n%2FEkksqC0w%3D%3D&numOfRows=46&resultType=json&likeSrtnCd=005930"
-  );
+const getStockPrice = async itemName => {
+  const response = await getStockDetails(itemName);
   const { data } = response;
   console.log(data);
-  const stockData = data.response.body.items.item;
+  const stockData = data.stocks;
 
   let x = [];
   let high = [];
@@ -52,7 +50,6 @@ const getStockPrice = async () => {
     xaxis: "x",
     yaxis: "y",
     hoverInfo: "text",
-    text: "asdf",
   };
 
   return { trace, info };
