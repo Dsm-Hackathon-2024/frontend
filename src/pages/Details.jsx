@@ -1,10 +1,11 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 import getStockPrice from "../utils/function/getStockPrice";
 import { useSearchParams } from "react-router-dom/dist";
 import { postStockBuy, postStockSell } from "../utils/apis/invest";
 import { getUserInfo, getUserInvest } from "../utils/apis/user";
+import LoadingBox from "../components/LoadingBox";
 
 const Details = () => {
   const [invest, setInvest] = useState("Buy");
@@ -167,11 +168,7 @@ const Details = () => {
               config={{ displayModeBar: false }}
             />
           )}
-          {(!stockInfo || !stockTrace) && (
-            <LoadingBox>
-              <Spinner></Spinner>
-            </LoadingBox>
-          )}
+          {(!stockInfo || !stockTrace) && <LoadingBox />}
         </GraphBox>
       </GraphSection>
       <InvestSection>
@@ -258,35 +255,6 @@ const GraphBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const LoadingBox = styled.div`
-  position: absolute;
-  margin: auto;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Spin = keyframes`
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-`;
-
-const Spinner = styled.div`
-  width: 30px;
-  height: 30px;
-  border: 2px solid gray;
-  border-top: 2px solid black;
-  border-radius: 50%;
-
-  animation: ${Spin} 1s linear infinite;
 `;
 
 const InvestSection = styled.section`
