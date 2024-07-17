@@ -1,39 +1,59 @@
 import styled from "styled-components";
 import theme from "../style/theme";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import HideIcon from "../assets/HideIcon";
+import EyeIcon from "../assets/EyeIcon";
 
 function Login() {
+  const [psType, setPsType] = useState(true);
+  const [psIcon, setPsIcon] = useState(true);
+
+  const onClick = () => {
+    setPsType(!psType);
+    setPsIcon(!psIcon);
+  };
   return (
-    <>
-      <Container>
-        <LoginField>
-          <Title>로그인</Title>
-          <IdContainer>
-            <Label for="Id">아이디</Label>
-            <Input type="text" placeholder="아이디를 입력하세요" name="Id" />
-          </IdContainer>
-          <PsContainer>
-            <Label for="Ps">비밀번호</Label>
+    <Container>
+      <LoginField>
+        <Title>로그인</Title>
+        <IdContainer>
+          <Label for="Id">아이디</Label>
+          <Input type="text" placeholder="아이디를 입력하세요" name="Id" />
+        </IdContainer>
+        <PsContainer>
+          <Label for="Ps">비밀번호</Label>
+          <div style={{ position: "relative" }}>
             <Password
-              type="password"
+              type={psType ? "password" : "text"}
               placeholder="비밀번호를 입력하세요"
               name="Ps"
             />
-          </PsContainer>
-        </LoginField>
-        <Footer>
-          <LoginBtn>로그인</LoginBtn>
-          <FooterMsg>
-            아직 계정이 없으신가요?
-            <Link to={"/signup"}>회원가입</Link>
-          </FooterMsg>
-        </Footer>
-      </Container>
-    </>
+            <PasswordIcon onClick={onClick}>
+              {psIcon ? <HideIcon /> : <EyeIcon />}
+            </PasswordIcon>
+          </div>
+        </PsContainer>
+      </LoginField>
+      <Footer>
+        <LoginBtn>로그인</LoginBtn>
+        <FooterMsg>
+          아직 계정이 없으신가요?
+          <Link to={"/signup"}>회원가입</Link>
+        </FooterMsg>
+      </Footer>
+    </Container>
   );
 }
 
 export default Login;
+
+const PasswordIcon = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 8px;
+`;
 
 const FooterMsg = styled.p`
   color: ${theme.colors.black0};
@@ -65,17 +85,6 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-
-  & > h1 {
-    @media screen and (max-width: 500px) {
-      margin-right: 235px;
-    }
-  }
-
-  @media screen and (max-width: 500px) {
-    width: 100vw;
-    height: 100vh;
-  }
 `;
 
 const Footer = styled.footer``;

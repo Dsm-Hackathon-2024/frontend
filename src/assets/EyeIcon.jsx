@@ -1,6 +1,6 @@
 import React from "react";
 
-const EyeIcon = ({ size = 24, color = "currentColor" }) => {
+const EyeIcon = ({ size = 24, color = "#ffffff" }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
