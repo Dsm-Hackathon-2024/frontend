@@ -21,12 +21,21 @@ export const postStockBuy = async (stockName, quantity, price, roc) => {
 };
 
 export const postStockSell = async (stockName, quantity, price, roc) => {
-  return instance.post(`invest/stocks/sell`, {
-    name: stockName,
-    quantity: quantity,
-    price: price,
-    roc: roc,
-  });
+  return instance
+    .post(`invest/stocks/sell`, {
+      name: stockName,
+      quantity: quantity,
+      price: price,
+      roc: roc,
+    })
+    .then(res => alert("성공적으로 판매했습니다"))
+    .catch(err => {
+      console.log(err);
+      switch (err.response.data.message) {
+        case "User does not own enough stocks to sell":
+          alert("유효한 판매 수량이 아닙니다");
+      }
+    });
 };
 
 export const getAllStock = async () => {
