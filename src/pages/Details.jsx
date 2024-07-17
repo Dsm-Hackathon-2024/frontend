@@ -4,6 +4,7 @@ import Plot from "react-plotly.js";
 import getStockPrice from "../utils/function/getStockPrice";
 import { useSearchParams } from "react-router-dom/dist";
 import { postStockBuy, postStockSell } from "../utils/apis/invest";
+import { getUserInfo, getUserInvest } from "../utils/apis/user";
 
 const Details = () => {
   const [invest, setInvest] = useState("Buy");
@@ -11,6 +12,8 @@ const Details = () => {
   const [stockInfo, setStockInfo] = useState();
   const [layout, setLayout] = useState();
   const [inputValue, setInputValue] = useState("");
+  const [userInfo, setUserInfo] = useState();
+  const [myInvest, setmyInvest] = useState();
 
   const [searchParams] = useSearchParams();
   const queryName = searchParams.get("name");
@@ -23,7 +26,17 @@ const Details = () => {
       setStockTrace(data.trace);
       setStockInfo(data.info);
     };
+    const getMyPoint = async () => {
+      const { data } = await getUserInfo();
+      setUserInfo(data);
+    };
+    const getMyInvest = async () => {
+      const { data } = await getUserInvest();
+      setmyInvest(data.filter(iv => iv.name === queryName));
+    };
 
+    getMyInvest();
+    getMyPoint();
     getStockData();
   }, []);
 
@@ -171,9 +184,9 @@ const Details = () => {
           </SellButton>
         </ButtonGroup>
         <PointBox>
-          <p>현재 jyk1029님은</p>
+          <p>현재 {userInfo?.name}님은</p>
           <Point invest={invest}>
-            <span>5</span>
+            <span>{userInfo?.points}</span>
             <span>원</span>
           </Point>
           <p>소유하고 있습니다.</p>
@@ -181,7 +194,8 @@ const Details = () => {
         </PointBox>
         <QuantityBox>
           <p>
-            {invest === "Buy" ? "매수" : "매도"} 희망수량 (현재 보유 수량 : 0주)
+            {invest === "Buy" ? "매수" : "매도"} 희망수량 (현재 보유 수량 :{" "}
+            {myInvest?.quantity}주)
           </p>
           <InputContainer>
             <PlusButton onClick={handlePlusClick}>+</PlusButton>

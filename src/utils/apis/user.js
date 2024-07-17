@@ -7,8 +7,12 @@ export const myInfo = async () => {
   return await instance.get(`${router}/rank`);
 };
 
-export const userInfo = async () => {
-  return await instance.get(`${router}/mypage/userinfo`);
+export const getUserInfo = async () => {
+  return await instance.get(`user/mypage/userinfo`);
+};
+
+export const getUserInvest = async () => {
+  return await instance.get(`user/mypage/invest`);
 };
 
 export const signUp = async data => {
