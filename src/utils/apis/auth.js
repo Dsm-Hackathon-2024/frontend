@@ -11,7 +11,7 @@ export const login = async data => {
 
 export const signUp = async data => {
   return await axios.post(
-    `${import.meta.env.VITE_SERVER_BASE_URL}/${router}/signup`,
+    `${import.meta.env.VITE_SERVER_BASE_URL}${router}/signup`,
     data
   );
 };
