@@ -1,9 +1,61 @@
 import styled from "styled-components";
-import { useState } from "react";
-import theme from "../style/theme";
+import { useEffect, useState } from "react";
+import Plot from "react-plotly.js";
+import getStockPrice from "../utils/function/getStockPrice";
 
 const Details = () => {
   const [invest, setInvest] = useState("Buy");
+  const [stockTrace, setStockTrace] = useState();
+  const [stockInfo, setStockInfo] = useState();
+  const [layout, setLayout] = useState();
+  const [inputValue, setInputValue] = useState("");
+
+  useEffect(() => {
+    const getStockData = async () => {
+      const data = await getStockPrice("KOSPI", "삼성전자");
+      setStockTrace(data.trace);
+      setStockInfo(data.info);
+    };
+
+    getStockData();
+  }, []);
+
+  useEffect(() => {
+    stockInfo &&
+      stockTrace &&
+      setLayout({
+        paper_bgcolor: "black",
+        plot_bgcolor: "black",
+        dragmode: "zoom",
+        showlegend: false,
+        xaxis: {
+          autorange: true,
+          domain: [0, 1],
+          range: [stockTrace.x[0], stockTrace.x[stockTrace.x.length - 1]],
+          type: "category",
+          tickvals: stockTrace.x.filter((x, index) => index % 9 === 0),
+          ticktext: ["06:00", "10:00", "14:00", "18:00", "22:00", "02:00"],
+          rangeslider: {
+            visible: false,
+          },
+        },
+        yaxis: {
+          autorange: true,
+          domain: [0, 1],
+          range: [stockInfo.lowestPrice * 0.95, stockInfo.highestPrice * 1.05],
+          type: "linear",
+          side: "right",
+        },
+        responsize: true,
+        margin: {
+          t: 10,
+          r: 30,
+          l: 30,
+          b: 30,
+        },
+      });
+    console.log(stockInfo);
+  }, [stockInfo, stockTrace]);
 
   const handleBuyClick = () => {
     setInvest("Buy");
@@ -13,6 +65,47 @@ const Details = () => {
     setInvest("Sell");
   };
 
+  const handlePlusClick = () => {
+    console.log(inputValue);
+    const prev = inputValue;
+    rawValue = prev.replace(/\s?주$/, "");
+    console.log(rawValue);
+    setInputValue(prev => (prev += 1));
+  };
+
+  const handleMinusClick = () => {
+    setInputValue(prev => (prev -= 1));
+  };
+
+  const formatNumber = num => {
+    if (!num) return "";
+    num = num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return num;
+  };
+
+  const handleInputChange = e => {
+    const inputValue = e.target.value.replace(/[^0-9]/g, ""); // 숫자만 남기기
+    if (inputValue === "") {
+      setInputValue(""); // 입력값이 없으면 빈 문자열로 설정
+    } else {
+      const formattedValue = formatNumber(inputValue);
+      setInputValue(`${formattedValue} 주`);
+    }
+  };
+
+  const handleInputFocus = e => {
+    const currentValue = e.target.value;
+    // ' 주'를 제거한 숫자 부분만 추출
+    const rawValue = currentValue.replace(/\s?주$/, "").replace(/,/g, "");
+    setInputValue(rawValue);
+  };
+
+  const handleInputBlur = e => {
+    const currentValue = e.target.value;
+    // 포맷팅된 값을 다시 설정
+    const formattedValue = formatNumber(currentValue);
+    setInputValue(formattedValue ? `${formattedValue}` : "");
+  };
   return (
     <View>
       <GraphSection>
@@ -20,7 +113,17 @@ const Details = () => {
           <span>삼성전자</span> 종목으로
           <br /> 모의 투자를 시작해보세요🎉
         </Title>
-        <GraphBox></GraphBox>
+        <GraphBox>
+          {stockInfo && stockTrace && (
+            <Plot
+              data={[stockTrace]}
+              layout={layout}
+              useResizeHandler={true}
+              style={{ width: "100%", height: "100%" }}
+              config={{ displayModeBar: false }}
+            />
+          )}
+        </GraphBox>
       </GraphSection>
       <InvestSection>
         <ButtonGroup>
@@ -43,9 +146,16 @@ const Details = () => {
         <QuantityBox>
           <p>매수 희망수량</p>
           <InputContainer>
-            <PlusButton>+</PlusButton>
-            <StocksInput type="text" inputmode="tel" invest={invest} />
-            <MinusButton>-</MinusButton>
+            <PlusButton onClick={handlePlusClick}>+</PlusButton>
+            <StocksInput
+              type="text"
+              invest={invest}
+              value={inputValue}
+              onChange={handleInputChange}
+              onFocus={handleInputFocus}
+              onBlur={handleInputBlur}
+            />
+            <MinusButton onClick={handleMinusClick}>-</MinusButton>
           </InputContainer>
         </QuantityBox>
         <TradingButton invest={invest}>매수</TradingButton>
@@ -87,9 +197,13 @@ const GraphSection = styled.section`
 `;
 
 const GraphBox = styled.div`
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.black80};
   width: 100%;
   height: 28vh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const InvestSection = styled.section`
