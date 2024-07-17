@@ -86,7 +86,7 @@ const Details = () => {
     _myInvest().then(res => {
       setMyStock(res.data);
     });
-  });
+  }, []);
 
   const handleBuyClick = () => {
     setInvest("Buy");
