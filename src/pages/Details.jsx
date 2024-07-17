@@ -140,14 +140,14 @@ const Details = () => {
         Number(quantity),
         Number(queryPrice),
         Number(queryRoc)
-      ).catch(err => console.log(err));
+      );
     } else if (invest === "Sell") {
       await postStockSell(
         queryName,
         Number(quantity),
-        Number(queryName),
+        Number(queryPrice),
         Number(queryRoc)
-      ).catch(err => console.log(err));
+      );
     }
   };
 
