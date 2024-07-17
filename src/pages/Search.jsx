@@ -3,15 +3,38 @@ import { theme } from "../style/theme";
 import { HomeButton } from "../components/HomeButton";
 import { SearchIcon } from "../assets/SearchIcon";
 import { ListItem } from "../components/ListItem";
+import { useEffect, useState } from "react";
+import getSearch from "../utils/apis/search";
 
 function Search() {
+  const [inputValue, setInputValue] = useState("");
+  const [searchResult, setSearchResult] = useState();
+
+  useEffect(() => {
+    const search = async keyword => {
+      const { data } = await getSearch(keyword);
+      console.log(data);
+      setSearchResult(data.stocks);
+    };
+
+    search(inputValue);
+  }, [inputValue]);
+
+  const handleChange = e => {
+    setInputValue(e.target.value);
+  };
+
   return (
     <Wrapper>
       <CenterContainer>
         <TopContainer>
           <TextContainer>검색 🔎</TextContainer>
           <SearchBarContainer>
-            <SearchBar placeholder="검색어를 입력해주세요" />
+            <SearchBar
+              value={inputValue}
+              placeholder="검색어를 입력해주세요"
+              onChange={handleChange}
+            />
             <div>
               <SearchIcon size={20} color={theme.colors.black15} />
             </div>
@@ -20,18 +43,22 @@ function Search() {
         <ListContainer>
           <div>검색 결과</div>
           <div>
-            {Array.from({ length: 10 }).map(() => {
+            {searchResult?.map((stock, idx) => {
               return (
-                <ListItem>
-                  <div>
-                    <div>1</div>
-                    <div>삼성전자</div>
-                  </div>
-                  <div>
-                    <div>87,600원</div>
-                    <div>+0.92%</div>
-                  </div>
-                </ListItem>
+                <a
+                  href={`/invest?name=${stock.itmsNm}&price=${stock.clpr}&roc=${stock.fltRt}`}
+                >
+                  <ListItem key={idx} isMinus={stock.fltRt < 0}>
+                    <div>
+                      <div>{idx + 1}</div>
+                      <div>{stock.itmsNm}</div>
+                    </div>
+                    <div>
+                      <div>{stock.clpr}원</div>
+                      <div>{stock.fltRt.replace(/(?<!\d)(-?)\./, "$10.")}</div>
+                    </div>
+                  </ListItem>
+                </a>
               );
             })}
           </div>
