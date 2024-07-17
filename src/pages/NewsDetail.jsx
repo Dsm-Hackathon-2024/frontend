@@ -1,23 +1,35 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import cheerio from "cheerio";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { theme } from "../style/theme";
+import { useLocation } from "react-router-dom/dist";
 
 function NewsDetail() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  const { pathname: path } = useLocation();
+
+  function decodeURL(encodedURL) {
+    return decodeURIComponent(encodedURL);
+  }
 
   useEffect(() => {
-    const newsUrl =
-      "https://www.yna.co.kr/view/AKR20160926019000008?input=1195m";
+    if (!path) return;
+
+    const newsUrl = atob(path.split("/")[2]);
+
     scrapeNews(newsUrl)
       .then(([newsTitle, newsContent]) => {
         setTitle(newsTitle);
         setContent(newsContent);
+        setIsLoading(false);
       })
       .catch(error => {
         console.error("Error:", error);
+        setIsLoading(false);
       });
   }, []);
 
@@ -45,15 +57,20 @@ function NewsDetail() {
     }
   };
 
+  if (isLoading) {
+    return (
+      <Wrapper>
+        <LoadingSpinner />
+      </Wrapper>
+    );
+  }
+
   return (
     <Wrapper>
       <CenterContainer>
         <TextContainer>{title}</TextContainer>
-        <ImgContainer>
-          <img src="" alt="News Image" />
-        </ImgContainer>
         <ContentContainer>
-          {content.split("\n").map((text, index) => (
+          {content?.split("\n").map((text, index) => (
             <React.Fragment key={index}>
               {text}
               <br />
@@ -105,23 +122,6 @@ const TextContainer = styled.div`
   flex: none;
 `;
 
-const ImgContainer = styled.div`
-  width: 100%;
-  height: 230px;
-  overflow: hidden;
-  border-radius: 8px;
-  flex: none;
-  > img {
-    width: 100%;
-  }
-
-  @media screen and (min-width: 600px) {
-    margin-left: 5%;
-    width: 90%;
-    height: 400px;
-  }
-`;
-
 const ContentContainer = styled.div`
   width: 100%;
   font-size: 12px;
@@ -158,4 +158,18 @@ const FinishButton = styled.div`
   &:hover {
     opacity: 0.8;
   }
+`;
+
+const spin = keyframes`
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+`;
+
+const LoadingSpinner = styled.div`
+  border: 4px solid ${theme.colors.black80};
+  border-top: 4px solid ${theme.colors.blue50};
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: ${spin} 1s linear infinite;
 `;
