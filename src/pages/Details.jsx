@@ -5,7 +5,7 @@ import getStockPrice from "../utils/function/getStockPrice";
 import { useSearchParams } from "react-router-dom/dist";
 import { postStockBuy, postStockSell } from "../utils/apis/invest";
 
-const Details = ({ detailInfo }) => {
+const Details = () => {
   const [invest, setInvest] = useState("Buy");
   const [stockTrace, setStockTrace] = useState();
   const [stockInfo, setStockInfo] = useState();
@@ -13,11 +13,13 @@ const Details = ({ detailInfo }) => {
   const [inputValue, setInputValue] = useState("");
 
   const [searchParams] = useSearchParams();
-  const query = searchParams.get("name");
+  const queryName = searchParams.get("name");
+  const queryPrice = searchParams.get("price");
+  const queryRoc = searchParams.get("roc");
 
   useEffect(() => {
     const getStockData = async () => {
-      const data = await getStockPrice(query);
+      const data = await getStockPrice(queryName);
       setStockTrace(data.trace);
       setStockInfo(data.info);
     };
@@ -120,17 +122,17 @@ const Details = ({ detailInfo }) => {
 
     if (invest === "Buy") {
       await postStockBuy(
-        query,
+        queryName,
         Number(quantity),
-        Number(detailInfo.price),
-        Number(detailInfo.roc)
+        Number(queryPrice),
+        Number(queryRoc)
       ).catch(err => console.log(err));
     } else if (invest === "Sell") {
       await postStockSell(
-        query,
+        queryName,
         Number(quantity),
-        Number(detailInfo.price),
-        Number(detailInfo.roc)
+        Number(queryName),
+        Number(queryRoc)
       ).catch(err => console.log(err));
     }
   };
@@ -139,7 +141,7 @@ const Details = ({ detailInfo }) => {
     <View>
       <GraphSection>
         <Title invest={invest}>
-          <span>{query}</span> 종목으로
+          <span>{queryName}</span> 종목으로
           <br /> 모의 투자를 시작해보세요🎉
         </Title>
         <GraphBox>

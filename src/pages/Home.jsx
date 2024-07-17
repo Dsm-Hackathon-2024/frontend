@@ -8,7 +8,7 @@ import { ListItem } from "../components/ListItem";
 import { myInfo } from "../utils/apis/user";
 import { getAllStock } from "../utils/apis/invest";
 
-function Home({ setDetailInfo }) {
+function Home() {
   const [selectedList, setSelectedList] = useState(0);
   const [stocksList, setStocksList] = useState([]);
   const link = useNavigate();
@@ -107,13 +107,7 @@ function Home({ setDetailInfo }) {
                 .map((stock, idx) => {
                   return (
                     <a
-                      href={`/invest?name=${stock.itmsNm}`}
-                      onClick={() =>
-                        setDetailInfo({
-                          price: stock.clpr,
-                          roc: stock.fltRt,
-                        })
-                      }
+                      href={`/invest?name=${stock.itmsNm}&price=${stock.clpr}&roc=${stock.fltRt}`}
                     >
                       <ListItem key={idx} isMinus={stock.fltRt < 0}>
                         <div>
@@ -134,13 +128,7 @@ function Home({ setDetailInfo }) {
                   .map((stock, idx) => {
                     return (
                       <a
-                        href={`/invest?name=${stock.itmsNm}`}
-                        onClick={() =>
-                          setDetailInfo({
-                            price: stock.clpr,
-                            roc: stock.fltRt,
-                          })
-                        }
+                        href={`/invest?name=${stock.itmsNm}&price=${stock.clpr}&roc=${stock.fltRt}`}
                       >
                         <ListItem key={idx} isMinus={stock.fltRt < 0}>
                           <div>
@@ -161,13 +149,7 @@ function Home({ setDetailInfo }) {
                   .map((stock, idx) => {
                     return (
                       <a
-                        href={`/invest?name=${stock.itmsNm}`}
-                        onClick={() =>
-                          setDetailInfo({
-                            price: stock.clpr,
-                            roc: stock.fltRt,
-                          })
-                        }
+                        href={`/invest?name=${stock.itmsNm}&price=${stock.clpr}&roc=${stock.fltRt}`}
                       >
                         <ListItem key={idx} isMinus={stock.fltRt < 0}>
                           <div>
