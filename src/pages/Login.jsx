@@ -5,7 +5,7 @@ import { useState } from "react";
 import HideIcon from "../assets/HideIcon";
 import EyeIcon from "../assets/EyeIcon";
 
-function Login() {
+function Login({ title, btnTitle, footerMsg, linkMsg }) {
   const [psType, setPsType] = useState(true);
   const [psIcon, setPsIcon] = useState(true);
 
@@ -16,7 +16,7 @@ function Login() {
   return (
     <Container>
       <LoginField>
-        <Title>로그인</Title>
+        <Title>{title}</Title>
         <IdContainer>
           <Label for="Id">아이디</Label>
           <Input type="text" placeholder="아이디를 입력하세요" name="Id" />
@@ -36,10 +36,10 @@ function Login() {
         </PsContainer>
       </LoginField>
       <Footer>
-        <LoginBtn>로그인</LoginBtn>
+        <LoginBtn>{btnTitle}</LoginBtn>
         <FooterMsg>
-          아직 계정이 없으신가요?
-          <Link to={"/signup"}>회원가입</Link>
+          {footerMsg}
+          <Link to={"/signup"}>{linkMsg}</Link>
         </FooterMsg>
       </Footer>
     </Container>
@@ -92,8 +92,7 @@ const Footer = styled.footer``;
 
 const LoginBtn = styled.button`
   /* fill-button */
-
-  width: 328px;
+  width: 308px;
   height: 44px;
   cursor: pointer;
 
@@ -102,17 +101,19 @@ const LoginBtn = styled.button`
   border-radius: 8px;
 
   /* 로그인 */
-
   font-family: "Pretendard";
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
-  /* identical to box height, or 150% */
   text-align: center;
 
   /* Black/0 */
   color: ${theme.colors.black0};
+
+  &:hover {
+    background: ${theme.colors.blue80};
+  }
 `;
 
 const Title = styled.h1`

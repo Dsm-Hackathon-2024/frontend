@@ -1,6 +1,5 @@
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Login from "../pages/Login";
-import SignUp from "../pages/SignUp";
 import Home from "../pages/Home";
 import Search from "../pages/Search";
 import Layout from "./Layout";
@@ -17,8 +16,28 @@ function MainRouter() {
       <ThemeProvider theme={theme}>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
+            <Route
+              index
+              element={
+                <Login
+                  title="로그인"
+                  btnTitle="로그인"
+                  footerMsg="아직 계정이 없으신가요?"
+                  linkMsg="회원가입"
+                />
+              }
+            />
+            <Route
+              path="/signup"
+              element={
+                <Login
+                  title="회원가입"
+                  btnTitle="회원가입"
+                  footerMsg="이미 계정이 있으신가요?"
+                  linkMsg="로그인"
+                />
+              }
+            />
             <Route path="/home" element={<Home />} />
             <Route path="/search" element={<Search />} />
             <Route path="/mypage" element={<MyPage />} />
