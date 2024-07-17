@@ -1,20 +1,34 @@
 import styled from "styled-components";
 import { theme } from "../style/theme";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SearchIcon } from "../assets/SearchIcon";
 import { useNavigate } from "react-router-dom/dist";
 import { UserIcon } from "../assets/UserIcon";
 import { ListItem } from "../components/ListItem";
+import { myInfo } from "../utils/apis/user";
 
 function Home() {
   const [selectedList, setSelectedList] = useState(0);
   const link = useNavigate();
+  const [_myInfo, setMyInfo] = useState({
+    name: "",
+  });
+
+  useEffect(() => {
+    myInfo()
+      .then(res => {
+        setMyInfo(res.data);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }, []);
 
   return (
     <Wrapper>
       <CenterContainer>
         <TextContainer>
-          <div>jyk1029님 환영합니다!</div>
+          <div>{_myInfo.name}님 환영합니다!</div>
           <div>
             <div>
               MOTOO 에서
