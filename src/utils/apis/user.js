@@ -1,10 +1,10 @@
 import axios from "axios";
 import { instance } from "./axios";
 
-const router = "/user/mypage";
+const router = "/user";
 
 export const myInfo = async () => {
-  return await instance.get(`${router}/userinfo`);
+  return await instance.get(`${router}/rank`);
 };
 
 export const signUp = async data => {
