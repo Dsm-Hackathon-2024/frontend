@@ -11,24 +11,22 @@ function MyPage() {
     <Wrapper>
       <CenterContainer>
         <TextContainer>
-          <div>
-            jyk1029님!
-            <br />
-            반가워요 😃
-          </div>
-          <span
-            onClick={() => {
-              link("/news");
-            }}
-          >
-            <CoinIcon size={40} color={theme.colors.black15} />
-          </span>
+          jyk1029님!
+          <br />
+          반가워요 😃
         </TextContainer>
         <PossessionContainer>
           <div>현재 소유 잔액</div>
           <div>
             <span>10,000,000</span>
             <span>원</span>
+          </div>
+          <div
+            onClick={() => {
+              link("/news");
+            }}
+          >
+            포인트 충전하러 가기
           </div>
         </PossessionContainer>
         <ListContainer>
@@ -82,18 +80,9 @@ const TextContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  > div {
-    font-size: 24px;
-    font-weight: 600;
-    color: white;
-  }
-  > span {
-    cursor: pointer;
-    margin-right: 10px;
-    @media screen and (min-width: 600px) {
-      margin-right: 0px;
-    }
-  }
+  font-size: 24px;
+  font-weight: 600;
+  color: white;
 `;
 
 const ListContainer = styled.div`
@@ -103,6 +92,7 @@ const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+  padding-bottom: 50px;
   > div:nth-child(1) {
     font-size: 20px;
     font-weight: 600;
@@ -111,7 +101,7 @@ const ListContainer = styled.div`
     padding: 16px;
     border-radius: 16px 16px 0 0;
     background-color: ${theme.colors.black50};
-    height: calc(100vh - 254px);
+    height: calc(100vh - 282px);
     padding-bottom: 70px;
     display: flex;
     flex-direction: column;
@@ -128,7 +118,7 @@ const ListContainer = styled.div`
 
 const PossessionContainer = styled.div`
   width: 100%;
-  height: 84px;
+  height: 134px;
   padding: 16px 14px;
   display: flex;
   flex-direction: column;
@@ -136,6 +126,7 @@ const PossessionContainer = styled.div`
   background-color: ${theme.colors.black40};
   border-radius: 16px;
   color: white;
+  flex: none;
   > div:nth-child(1) {
     font-size: 12px;
   }
@@ -146,5 +137,19 @@ const PossessionContainer = styled.div`
       font-size: 24px;
       font-weight: 600;
     }
+  }
+  > div:nth-child(3) {
+    width: 100%;
+    max-width: 500px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 500;
+    background-color: ${theme.colors.black15};
+    border-radius: 8px;
+    align-self: center;
   }
 `;
