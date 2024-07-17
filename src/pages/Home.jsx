@@ -55,9 +55,9 @@ function Home() {
         <RecommendContainer>
           <div>AI가 추천한 {_myInfo.name}님의 종목은</div>
           <div>
-            <div>기아</div>
-            <div>유한양행우</div>
-            <div>CJ대한통운</div>
+            <div>AJ네트웍스</div>
+            <div>CJ제일제당</div>
+            <div>현대코퍼레이션</div>
           </div>
         </RecommendContainer>
         <ListContainer>
