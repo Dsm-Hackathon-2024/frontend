@@ -117,7 +117,9 @@ function Home() {
                         </div>
                         <div>
                           <div>{stock.clpr}원</div>
-                          <div>{stock.fltRt}</div>
+                          <div>
+                            {stock.fltRt.replace(/(?<!\d)(-?)\./, "$10.")}
+                          </div>
                         </div>
                       </ListItem>
                     </a>
