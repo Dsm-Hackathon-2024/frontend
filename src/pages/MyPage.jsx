@@ -38,7 +38,6 @@ function MyPage() {
                 <ListItem>
                   <div>
                     <div>1</div>
-                    <div></div>
                     <div>삼성전자</div>
                   </div>
                   <div>
@@ -144,12 +143,6 @@ const ListItem = styled.div`
       font-weight: 600;
     }
     > div:nth-child(2) {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: gray;
-    }
-    > div:nth-child(3) {
       font-size: 12px;
       font-weight: 500;
     }
