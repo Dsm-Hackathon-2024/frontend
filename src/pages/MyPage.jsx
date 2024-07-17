@@ -115,13 +115,7 @@ function MyPage() {
                 .map((stock, idx) => {
                   return (
                     <a
-                      href={`/invest?name=${stock.itmsNm}`}
-                      onClick={() =>
-                        setDetailInfo({
-                          price: stock.clpr,
-                          roc: stock.fltRt,
-                        })
-                      }
+                      href={`/invest?name=${stock.name}&price=${stock.price}&roc=${stock.roc}`}
                     >
                       <ListItem key={idx} isMinus={stock.roc < 0}>
                         <div>
