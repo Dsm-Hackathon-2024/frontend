@@ -101,7 +101,7 @@ const ListContainer = styled.div`
     padding: 16px;
     border-radius: 16px 16px 0 0;
     background-color: ${theme.colors.black50};
-    height: calc(100vh - 282px);
+    height: calc(100vh - 322px);
     padding-bottom: 70px;
     display: flex;
     flex-direction: column;
