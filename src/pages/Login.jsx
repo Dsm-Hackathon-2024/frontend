@@ -65,7 +65,7 @@ function Login({ title, btnTitle, footerMsg, linkMsg }) {
               placeholder="비밀번호를 입력하세요"
               name="password"
               onChange={onChange}
-              value={name}
+              value={password}
             />
             <PasswordIcon onClick={onClick}>
               {psIcon ? <HideIcon /> : <EyeIcon />}
