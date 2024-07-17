@@ -29,11 +29,16 @@ export const ListItem = styled.div`
     gap: 6px;
     font-size: 12px;
     font-weight: 500;
+    justify-content: end;
     > div:nth-child(1) {
+      text-align: end;
       color: white;
     }
     > div:nth-child(2) {
-      color: ${theme.colors.red50};
+      width: 36px;
+      text-align: end;
+      color: ${({ isMinus }) =>
+        isMinus ? theme.colors.blue50 : theme.colors.red50};
     }
   }
 `;

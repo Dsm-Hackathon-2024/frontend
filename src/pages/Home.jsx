@@ -6,9 +6,11 @@ import { useNavigate } from "react-router-dom/dist";
 import { UserIcon } from "../assets/UserIcon";
 import { ListItem } from "../components/ListItem";
 import { myInfo } from "../utils/apis/user";
+import { getAllStock } from "../utils/apis/invest";
 
-function Home() {
+function Home({ setDetailInfo }) {
   const [selectedList, setSelectedList] = useState(0);
+  const [stocksList, setStocksList] = useState([]);
   const link = useNavigate();
   const [_myInfo, setMyInfo] = useState({
     name: "",
@@ -22,6 +24,11 @@ function Home() {
       .catch(err => {
         console.error(err);
       });
+    getAllStock()
+      .then(res => {
+        setStocksList(res.data.stocks);
+      })
+      .catch(err => console.log(err));
   }, []);
 
   return (
@@ -62,7 +69,7 @@ function Home() {
                   setSelectedList(0);
                 }}
               >
-                거래대금
+                주가
               </Menu>
               <Menu
                 isSelected={selectedList === 1}
@@ -93,20 +100,88 @@ function Home() {
             </div>
           </div>
           <div>
-            {Array.from({ length: 10 }).map(() => {
-              return (
-                <ListItem>
-                  <div>
-                    <div>1</div>
-                    <div>삼성전자</div>
-                  </div>
-                  <div>
-                    <div>87,600원</div>
-                    <div>+0.92%</div>
-                  </div>
-                </ListItem>
-              );
-            })}
+            {(stocksList &&
+              selectedList === 0 &&
+              stocksList
+                .sort((a, b) => Number(a.clpr) - Number(b.clpr))
+                .map((stock, idx) => {
+                  return (
+                    <a
+                      href={`/invest?name=${stock.itmsNm}`}
+                      onClick={() =>
+                        setDetailInfo({
+                          price: stock.clpr,
+                          roc: stock.fltRt,
+                        })
+                      }
+                    >
+                      <ListItem key={idx} isMinus={stock.fltRt < 0}>
+                        <div>
+                          <div>{idx + 1}</div>
+                          <div>{stock.itmsNm}</div>
+                        </div>
+                        <div>
+                          <div>{stock.clpr}원</div>
+                          <div>{stock.fltRt}</div>
+                        </div>
+                      </ListItem>
+                    </a>
+                  );
+                })) ||
+              (selectedList === 1 &&
+                stocksList
+                  .sort((a, b) => Number(b.fltRt) - Number(a.fltRt))
+                  .map((stock, idx) => {
+                    return (
+                      <a
+                        href={`/invest?name=${stock.itmsNm}`}
+                        onClick={() =>
+                          setDetailInfo({
+                            price: stock.clpr,
+                            roc: stock.fltRt,
+                          })
+                        }
+                      >
+                        <ListItem key={idx} isMinus={stock.fltRt < 0}>
+                          <div>
+                            <div>{idx + 1}</div>
+                            <div>{stock.itmsNm}</div>
+                          </div>
+                          <div>
+                            <div>{stock.clpr}원</div>
+                            <div>{stock.fltRt}</div>
+                          </div>
+                        </ListItem>
+                      </a>
+                    );
+                  })) ||
+              (selectedList === 2 &&
+                stocksList
+                  .sort((a, b) => Number(a.fltRt) - Number(b.fltRt))
+                  .map((stock, idx) => {
+                    return (
+                      <a
+                        href={`/invest?name=${stock.itmsNm}`}
+                        onClick={() =>
+                          setDetailInfo({
+                            price: stock.clpr,
+                            roc: stock.fltRt,
+                          })
+                        }
+                      >
+                        <ListItem key={idx} isMinus={stock.fltRt < 0}>
+                          <div>
+                            <div>{idx + 1}</div>
+                            <div>{stock.itmsNm}</div>
+                          </div>
+                          <div>
+                            <div>{stock.clpr}원</div>
+                            <div>{stock.fltRt}</div>
+                          </div>
+                        </ListItem>
+                      </a>
+                    );
+                  }))}
           </div>
         </ListContainer>
       </CenterContainer>
