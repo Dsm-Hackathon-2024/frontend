@@ -1,13 +1,43 @@
 import styled from "styled-components";
 import theme from "../style/theme";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import HideIcon from "../assets/HideIcon";
 import EyeIcon from "../assets/EyeIcon";
+import { login } from "../utils/apis/auth";
 
 function Login({ title, btnTitle, footerMsg, linkMsg }) {
   const [psType, setPsType] = useState(true);
   const [psIcon, setPsIcon] = useState(true);
+  const [data, setData] = useState({
+    name: "",
+    password: "",
+  });
+
+  const link = useNavigate();
+
+  const { name, password } = data;
+
+  const onChange = e => {
+    const { name, value } = e.target;
+
+    setData({
+      ...data,
+      [name]: value,
+    });
+  };
+
+  const onLogin = () => {
+    login(data)
+      .then(res => {
+        link("/home");
+        Cookie.set("accessToken", res.data.accessToken);
+      })
+      .catch(err => {
+        alert("로그인에 실패했습니다.");
+        console.log(err);
+      });
+  };
 
   const onClick = () => {
     setPsType(!psType);
@@ -18,16 +48,24 @@ function Login({ title, btnTitle, footerMsg, linkMsg }) {
       <LoginField>
         <Title>{title}</Title>
         <IdContainer>
-          <Label for="Id">아이디</Label>
-          <Input type="text" placeholder="아이디를 입력하세요" name="Id" />
+          <Label for="name">아이디</Label>
+          <Input
+            type="text"
+            placeholder="아이디를 입력하세요"
+            name="name"
+            onChange={onChange}
+            value={name}
+          />
         </IdContainer>
         <PsContainer>
-          <Label for="Ps">비밀번호</Label>
+          <Label for="password">비밀번호</Label>
           <div style={{ position: "relative" }}>
             <Password
               type={psType ? "password" : "text"}
               placeholder="비밀번호를 입력하세요"
-              name="Ps"
+              name="password"
+              onChange={onChange}
+              value={name}
             />
             <PasswordIcon onClick={onClick}>
               {psIcon ? <HideIcon /> : <EyeIcon />}
@@ -36,7 +74,7 @@ function Login({ title, btnTitle, footerMsg, linkMsg }) {
         </PsContainer>
       </LoginField>
       <Footer>
-        <LoginBtn>{btnTitle}</LoginBtn>
+        <LoginBtn onClick={onLogin}>{btnTitle}</LoginBtn>
         <FooterMsg>
           {footerMsg}
           <Link to={"/signup"}>{linkMsg}</Link>
