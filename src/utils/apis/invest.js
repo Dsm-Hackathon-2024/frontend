@@ -8,8 +8,15 @@ export const postStockBuy = async (stockName, quantity, price, roc) => {
       price: price,
       roc: roc,
     })
+    .then(res => alert("성공적으로 구매했습니다"))
     .catch(err => {
       console.log(err);
+      switch (err.response.data.message) {
+        case "Invalid quantity":
+          alert("유효한 구매 수량이 아닙니다");
+        case "Insufficient points to buy stocks":
+          alert("보유한 포인트가 부족합니다");
+      }
     });
 };
 
@@ -26,6 +33,6 @@ export const getAllStock = async () => {
   return instance.get(`invest/stocks`);
 };
 
-export const getStockDetails = async (itemName) => {
+export const getStockDetails = async itemName => {
   return instance.get(`invest/stocks/detail?itmsNm=${itemName}`);
 };
