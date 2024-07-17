@@ -19,7 +19,7 @@ function NewsDetail() {
   useEffect(() => {
     if (!path) return;
 
-    const newsUrl = atob(path.split("/")[2]);
+    const newsUrl = atob(path.split("/")[2].replace("-", "/"));
 
     scrapeNews(newsUrl)
       .then(([newsTitle, newsContent]) => {
@@ -73,6 +73,7 @@ function NewsDetail() {
           {content?.split("\n").map((text, index) => (
             <React.Fragment key={index}>
               {text}
+              <br />
               <br />
             </React.Fragment>
           ))}
