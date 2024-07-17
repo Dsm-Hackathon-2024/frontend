@@ -12,12 +12,14 @@ export default LoadingBox;
 
 const Loading = styled.div`
   position: absolute;
-  margin: auto;
+  top: calc(50% - 25px);
+  left: calc(50% - 25px);
   width: 50px;
   height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: transparent !important;
 `;
 
 const Spin = keyframes`

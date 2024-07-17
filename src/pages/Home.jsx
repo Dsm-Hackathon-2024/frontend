@@ -7,10 +7,11 @@ import { UserIcon } from "../assets/UserIcon";
 import { ListItem } from "../components/ListItem";
 import { myInfo } from "../utils/apis/user";
 import { getAllStock } from "../utils/apis/invest";
+import LoadingBox from "../components/LoadingBox";
 
 function Home() {
   const [selectedList, setSelectedList] = useState(0);
-  const [stocksList, setStocksList] = useState([]);
+  const [stocksList, setStocksList] = useState();
   const link = useNavigate();
   const [_myInfo, setMyInfo] = useState({
     name: "",
@@ -164,6 +165,7 @@ function Home() {
                       </a>
                     );
                   }))}
+            {!stocksList && <LoadingBox />}
           </div>
         </ListContainer>
       </CenterContainer>
@@ -283,6 +285,7 @@ const ListContainer = styled.div`
     margin: 4px 0 10px 0;
   }
   > div:nth-child(3) {
+    position: relative;
     padding: 16px;
     border-radius: 16px 16px 0 0;
     background-color: ${theme.colors.black50};
