@@ -5,6 +5,7 @@ import { useState } from "react";
 import HideIcon from "../assets/HideIcon";
 import EyeIcon from "../assets/EyeIcon";
 import { login, signUp } from "../utils/apis/auth";
+import { Cookie } from "../utils/cookie";
 
 function Login({ title, btnTitle, footerMsg, linkMsg }) {
   const [psType, setPsType] = useState(true);
@@ -34,30 +35,28 @@ function Login({ title, btnTitle, footerMsg, linkMsg }) {
       password: "",
     });
   };
-  const onLogin = () => {
-    login(data)
-      .then(res => {
-        link("/home");
-        Cookie.set("accessToken", res.data.accessToken);
-      })
-      .catch(err => {
-        alert("로그인에 실패했습니다.");
-        console.log(err);
-        resetValue;
-      });
+  const onLogin = async () => {
+    try {
+      const res = await login(data);
+      link("/home");
+      Cookie.set("accessToken", res.data.accessToken);
+    } catch (err) {
+      alert("로그인에 실패했습니다.");
+      console.log(err);
+      resetValue();
+    }
   };
 
-  const onSignUp = () => {
-    signUp(data)
-      .then(res => {
-        link("/");
-        Cookie.set("accessToken", res.data.accessToken);
-      })
-      .catch(err => {
-        alert("회원가입에 실패했습니다.");
-        console.log(err);
-        resetValue;
-      });
+  const onSignUp = async () => {
+    try {
+      const res = await signUp(data);
+      link("/");
+      Cookie.set("accessToken", res.data.accessToken);
+    } catch (err) {
+      alert("회원가입에 실패했습니다.");
+      console.log(err);
+      resetValue();
+    }
   };
 
   const onClick = () => {
