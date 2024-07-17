@@ -4,11 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import HideIcon from "../assets/HideIcon";
 import EyeIcon from "../assets/EyeIcon";
-import { login } from "../utils/apis/auth";
+import { login, signUp } from "../utils/apis/auth";
 
 function Login({ title, btnTitle, footerMsg, linkMsg }) {
   const [psType, setPsType] = useState(true);
   const [psIcon, setPsIcon] = useState(true);
+
   const [data, setData] = useState({
     name: "",
     password: "",
@@ -19,7 +20,7 @@ function Login({ title, btnTitle, footerMsg, linkMsg }) {
   const { name, password } = data;
 
   const onChange = e => {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
 
     setData({
       ...data,
@@ -27,6 +28,12 @@ function Login({ title, btnTitle, footerMsg, linkMsg }) {
     });
   };
 
+  const resetValue = () => {
+    setData({
+      name: "",
+      password: "",
+    });
+  };
   const onLogin = () => {
     login(data)
       .then(res => {
@@ -36,6 +43,20 @@ function Login({ title, btnTitle, footerMsg, linkMsg }) {
       .catch(err => {
         alert("로그인에 실패했습니다.");
         console.log(err);
+        resetValue;
+      });
+  };
+
+  const onSignUp = () => {
+    signUp(data)
+      .then(res => {
+        link("/");
+        Cookie.set("accessToken", res.data.accessToken);
+      })
+      .catch(err => {
+        alert("회원가입에 실패했습니다.");
+        console.log(err);
+        resetValue;
       });
   };
 
@@ -74,10 +95,17 @@ function Login({ title, btnTitle, footerMsg, linkMsg }) {
         </PsContainer>
       </LoginField>
       <Footer>
-        <LoginBtn onClick={onLogin}>{btnTitle}</LoginBtn>
+        <LoginBtn onClick={btnTitle === "로그인" ? onLogin : onSignUp}>
+          {btnTitle}
+        </LoginBtn>
         <FooterMsg>
           {footerMsg}
-          <Link to={"/signup"}>{linkMsg}</Link>
+          <Link
+            to={linkMsg === "로그인" ? "/" : "/signup"}
+            onClick={resetValue}
+          >
+            {linkMsg}
+          </Link>
         </FooterMsg>
       </Footer>
     </Container>
