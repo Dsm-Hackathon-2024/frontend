@@ -155,6 +155,9 @@ const Details = () => {
         .then(() => {
           setInputValue("0 주");
           getMyPoint();
+          _myInvest().then(res => {
+            setMyStock(res.data);
+          });
         })
         .catch(err => console.log(err));
     } else if (invest === "Sell") {
@@ -166,6 +169,9 @@ const Details = () => {
       ).then(() => {
         setInputValue("0 주");
         getMyPoint();
+        _myInvest().then(res => {
+          setMyStock(res.data);
+        });
       });
     }
   };
