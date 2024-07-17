@@ -17,3 +17,7 @@ export const signUp = async data => {
     data
   );
 };
+
+export const myInvest = async () => {
+  return await instance.get(`${router}/mypage/invest`);
+};
